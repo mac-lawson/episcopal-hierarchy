@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bishop {{ bishop['bishop'] }}</title>
+</head>
+<body>
+    <h1 style="text-align: center;">Bishop {{ bishop['bishop'] }}</h1>
+    
+    {% if 'PB' in bishop['notes'] %}
+        {% set pb_number = bishop['notes']|replace('PB', '')|int %}
+        {% set suffix = 'th' if pb_number not in [1, 2, 3] else ('st' if pb_number == 1 else ('nd' if pb_number == 2 else 'rd')) %}
+        <h3 style="text-align: center;">{{ pb_number }}{{ suffix }} Presiding Bishop of the Episcopal Church</h3>
+    {% endif %}
+    
+    {% if bishop['diocese'] %}
+        {% set position_match = bishop['diocese'].split(' ') %}
+        {% if position_match|length > 1 %}
+            {% set diocese = position_match|join(' ') %}
+            <p style="text-align: center;">{{ position_match[0]}} Bishop of {{ position_match[1:]|join(' ') }}</p>
+        {% else %}
+            <p style="text-align: center;">Bishop of {{ bishop['diocese'] }}</p>
+        {% endif %}
+    {% endif %}
+
+    <table class="infobox vcard" style="margin-left: auto; margin-right: auto; border: 1px solid black; border-collapse: collapse;">
+        <tbody>
+            <tr>
+                <th class="infobox-header" style="color: #202122; background-color: #dddddd;" colspan="2">Orders</th>
+            </tr>
+            <tr>
+                <th class="infobox-label" scope="row">Consecrators</th>
+                <td class="infobox-data">{{ bishop['consecrators'] }}</td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
