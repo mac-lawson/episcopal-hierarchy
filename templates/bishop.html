@@ -4,36 +4,138 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bishop {{ bishop['bishop'] }}</title>
+    <style>
+        /* Navbar style */
+        nav {
+            background-color: grey;
+            font-family: Georgia, serif;
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+        }
+        
+        /* Navbar links style */
+        nav a {
+            color: black;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+        }
+
+        /* Hover effect for links */
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Additional styling for content */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h3 {
+            text-align: center;
+        }
+
+        .infobox {
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid black;
+            border-collapse: collapse;
+            width: 60%;
+        }
+
+        .infobox-header {
+            color: #202122;
+            background-color: #dddddd;
+        }
+
+        .infobox-label, .infobox-data {
+            padding: 8px;
+            text-align: left;
+        }
+
+        .infobox-data {
+            text-align: center;
+        }
+
+        /* Center the "Bishop of Place" text */
+        .bishop-info {
+            text-align: center;
+        }        
+    </style>
 </head>
 <body>
-    <h1 style="text-align: center;">Bishop {{ bishop['bishop'] }}</h1>
-    
+<h1>Episcopal Hierarchy</h1>
+    <!-- Navbar -->
+    <nav>
+        <a href="/">Home</a>
+        <a href="#bishops">Bishops</a>
+        <a href="#dioceses">Dioceses</a>
+    </nav>
+
+    <!-- Bishop Details -->
+    <h1>The Most Reverend {{ bishop['bishop'] }}</h1>
+
     {% if 'PB' in bishop['notes'] %}
-        {% set pb_number = bishop['notes']|replace('PB', '')|int %}
-        {% set suffix = 'th' if pb_number not in [1, 2, 3] else ('st' if pb_number == 1 else ('nd' if pb_number == 2 else 'rd')) %}
-        <h3 style="text-align: center;">{{ pb_number }}{{ suffix }} Presiding Bishop of the Episcopal Church</h3>
+        {% set pb_number = bishop['notes'] | replace('PB', '') | int %}
+        
+        {% if pb_number == 1 %}
+            {% set suffix = 'st' %}
+        {% elif pb_number == 2 %}
+            {% set suffix = 'nd' %}
+        {% elif pb_number == 3 %}
+            {% set suffix = 'rd' %}
+        {% elif pb_number in [11, 12, 13] %}
+            {% set suffix = 'th' %}
+        {% else %}
+            {% set suffix = 'th' %}
+        {% endif %}
+        
+        <h3>{{ pb_number }}{{ suffix }} Presiding Bishop of the Episcopal Church</h3>
     {% endif %}
-    
+
     {% if bishop['diocese'] %}
         {% set position_match = bishop['diocese'].split(' ') %}
         {% if position_match|length > 1 %}
             {% set diocese = position_match|join(' ') %}
-            <p style="text-align: center;">{{ position_match[0]}} Bishop of {{ position_match[1:]|join(' ') }}</p>
+            <p class="bishop-info">{{ position_match[0]}} Bishop of {{ position_match[1:]|join(' ') }}</p>
         {% else %}
-            <p style="text-align: center;">Bishop of {{ bishop['diocese'] }}</p>
+            <p class="bishop-info">Bishop of {{ bishop['diocese'] }}</p>
         {% endif %}
     {% endif %}
 
-    <table class="infobox vcard" style="margin-left: auto; margin-right: auto; border: 1px solid black; border-collapse: collapse;">
+    <!-- Infobox with Consecrators -->
+    <table class="infobox vcard">
         <tbody>
             <tr>
-                <th class="infobox-header" style="color: #202122; background-color: #dddddd;" colspan="2">Orders</th>
+                <th class="infobox-header" colspan="2">Holy Orders</th>
             </tr>
             <tr>
                 <th class="infobox-label" scope="row">Consecrators</th>
-                <td class="infobox-data">{{ bishop['consecrators'] }}</td>
+                <td class="infobox-data">
+                    <table>
+                        <tbody>
+                            {% for consecrator in bishop['consecrators'].split(',') %}
+                                {% set consecrator_name = bishop_codes.get(consecrator.strip(), consecrator.strip()) %}
+                                
+                                {% if consecrator_name == consecrator.strip() %}
+                                    <!-- Add your custom code here for consecrators not found in bishop_codes -->
+                                    {% set consecrator_name = all_bishops[(consecrator|int) - 1]['bishop'] %}
+                                        
+                                {% endif %}
+                                
+                                <tr>
+                                    <td><a href="/bishop/{{ consecrator_name | replace(' ', '%20') }}">{{ consecrator_name }}</a></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </td>
             </tr>
         </tbody>
     </table>
+
 </body>
 </html>

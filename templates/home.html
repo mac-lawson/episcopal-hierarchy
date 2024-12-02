@@ -4,13 +4,149 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Episcopal Succession</title>
+    <style>
+        /* General styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h3 {
+            text-align: center;
+        }
+
+        /* Title area with space for images */
+        .header {
+            background-color: grey;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            color: white;
+        }
+
+        .header img {
+            width: 50px;
+            height: 50px;
+        }
+
+        /* Navbar style */
+        nav {
+            background-color: grey;
+            font-family: Georgia, serif;
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+        }
+
+        /* Navbar links style */
+        nav a {
+            color: black;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+        }
+
+        /* Hover effect for links */
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Two-column layout */
+        .container {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        /* Left column for Bishops */
+        .bishops-column {
+            width: 48%;
+            padding: 10px;
+            background-color: #f4f4f4;
+        }
+
+        /* Right column for Dioceses */
+        .dioceses-column {
+            width: 48%;
+            padding: 10px;
+            background-color: #f9f9f9;
+        }
+
+        /* Footer style */
+        footer {
+            background-color: grey;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        /* List style */
+        ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+        }
+
+        li {
+            margin: 10px 0;
+        }
+    </style>
 </head>
+
 <body>
-    <h1 style="text-align: center;">Episcopal Succession</h1>
-    <ul style="text-align: center; list-style-type: none; padding: 0;">
-        {% for bishop in bishops %}
-            <li><a href="/bishop/{{ bishop['bishop'] }}">{{ bishop['bishop'] }}</a></li>
-        {% endfor %}
-    </ul>
+
+    <!-- Header with space for images -->
+    <div class="header">
+        <h1>Episcopal Church Hierarchy</h1>
+        <div>
+            <img src="https://www.episcopalchurch.org/wp-content/uploads/sites/2/2024/05/TEC-Shield-Thumbnail-820x1024.png" alt="Right Image">            
+           <b><i>Episcopal Web Project</i></b>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav>
+        <a href="/">Home</a>
+        <a href="#bishops">Bishops</a>
+        <a href="#dioceses">Dioceses</a>
+    </nav>
+
+    <!-- Main content container -->
+    <div class="container">
+        <!-- Left column for Bishops -->
+        <div class="bishops-column">
+            <h3>Bishops List</h3>
+            <ul>
+                {% if bishops %}
+                    {% for bishop in bishops %}
+                        <li><a href="/bishop/{{ bishop['bishop'] }}">{{ bishop['bishop'] }}</a></li>
+                    {% endfor %}
+                {% else %}
+                    <li>No bishops available.</li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <!-- Right column for Dioceses (coming soon) -->
+        <div class="dioceses-column">
+            <h3>Dioceses</h3>
+            <p>Content for Dioceses will be available soon.</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Episcopal Succession. All rights reserved.</p>
+    </footer>
+
 </body>
 </html>
