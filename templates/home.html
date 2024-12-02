@@ -142,7 +142,7 @@
             <ul>        
                 {% if diocese %}
                     {% for d in diocese %}
-                        <li><a href="">{{ d['Diocese'] }}</a></li>
+                        <li><a href="/diocese/{{ d['Diocese'] }}">{{ d['Diocese'] }}</a></li>
                     {% endfor %}
                 {% else %}
                     <li>No bishops available.</li>

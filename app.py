@@ -1,6 +1,6 @@
 from flask import Flask, render_template, g
 import sqlite3
-import wikipedia
+
 
 
 app = Flask(__name__)
@@ -112,18 +112,35 @@ if __name__ == "__main__":
     app.run(debug=True)
 
 
+# @app.route("/diocese/<name>")
+# def diocese(diocese):
+#     """Details page for a diocese."""
+#     print("diocese")  # Debug print
+
+#     # Fetch diocese details
+#     db = get_db_d()
+#     cursor = db.execute("SELECT * FROM diocese WHERE Diocese = ?", (diocese,))
+#     diocese_data = cursor.fetchone()
+
+#     # Fetch connected bishops (assuming a 'Diocese' column in the bishops table)
+#     db1 = get_db_b()
+#     cursor1 = db1.execute("SELECT * FROM bishops WHERE Diocese LIKE ?", (f"%{diocese}%",))
+#     connected_bishops = cursor1.fetchall()
+
+#     if not diocese_data:
+#         return (
+#             f"<h1>{diocese} not found in the diocese database.</h1><br><p>Email mlawson07@tutanota.com</p>",
+#             404,
+#         )
+
+#     return render_template(
+#         "diocese.html", diocese_data=diocese_data, connected_bishops=connected_bishops
+#     )
+
 @app.route("/diocese/<name>")
 def diocese(name):
-    """Details page for a specific bishop."""
-    db = get_db_d()
-    cursor = db.execute("SELECT * FROM Diocese WHERE Diocese = ?", (name,))
-    diocese_data = cursor.fetchone()
-    cursor = db.execute("SELECT Bishop FROM bishops")
-    connected_bishops = cursor.fetchall()
-    
-    if not bishop_data:
-        return f"<h1>{name} not found in the prelate database.</h1><br><p>Email mlawson07@tutanota.com</p>", 404
-  
-    return render_template("bishop.html", all_bishops=all_bishops, bishop=bishop_data, bishop_codes=bishop_codes)
+    print("Route triggered with name:", name)
+    return f"Route triggered with name: {name}"
+
 
 
