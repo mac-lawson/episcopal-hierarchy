@@ -1,10 +1,13 @@
 from flask import Flask, render_template, g
 import sqlite3
+import wikipedia
+
 
 app = Flask(__name__)
 
 # Database configuration
-DATABASE = "bishops.db"
+DATABASE_BISHOPS = "bishops.db"
+DATABASE_DIOCESE = "diocese.db"
 # Mapping of bishop codes to actual bishop names
 bishop_codes = {
     "BAK": "Gilbert Baker, Bishop of Hong Kong and Macao",
@@ -56,13 +59,20 @@ bishop_codes = {
     "ZIE": "Thaddeus F. Zielinski, Polish National Catholic bishop"
 }
 
-def get_db():
+
+
+def get_db_b():
     """Connect to the SQLite database."""
     db = getattr(g, '_database', None)
     if db is None:
-        db = g._database = sqlite3.connect(DATABASE)
+        db = g._database = sqlite3.connect(DATABASE_BISHOPS)
     db.row_factory = sqlite3.Row
     return db
+
+def get_db_d():
+    with sqlite3.connect(DATABASE_DIOCESE) as db:
+        db.row_factory = sqlite3.Row
+        return db
 
 @app.teardown_appcontext
 def close_connection(exception):
@@ -74,25 +84,46 @@ def close_connection(exception):
 @app.route("/")
 def home():
     """Home page: list all bishops."""
-    db = get_db()
-    cursor = db.execute("SELECT bishop FROM bishops")
+    db = get_db_b()
+    db_1 = get_db_d()
+    cursor = db.execute("SELECT Bishop FROM bishops")
     bishops = cursor.fetchall()
-    #print(bishops[30]['bishop'])
-    return render_template("home.html", bishops=bishops)
+
+    cursor_1 = db_1.execute("SELECT Diocese FROM diocese")
+    diocese = cursor_1.fetchall()
+    print(bishops[30]['bishop'])
+    return render_template("home.html", bishops=bishops, diocese=diocese)
 
 @app.route("/bishop/<name>")
 def bishop(name):
     """Details page for a specific bishop."""
-    db = get_db()
-    cursor = db.execute("SELECT * FROM bishops WHERE bishop = ?", (name,))
+    db = get_db_b()
+    cursor = db.execute("SELECT * FROM bishops WHERE Bishop = ?", (name,))
     bishop_data = cursor.fetchone()
-    cursor = db.execute("SELECT bishop FROM bishops")
+    cursor = db.execute("SELECT Bishop FROM bishops")
     all_bishops = cursor.fetchall()
     
     if not bishop_data:
-        return f"<h1>Bishop {name} not found.</h1>", 404
-    
+        return f"<h1>{name} not found in the prelate database.</h1><br><p>Email mlawson07@tutanota.com</p>", 404
+  
     return render_template("bishop.html", all_bishops=all_bishops, bishop=bishop_data, bishop_codes=bishop_codes)
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+@app.route("/diocese/<name>")
+def diocese(name):
+    """Details page for a specific bishop."""
+    db = get_db_d()
+    cursor = db.execute("SELECT * FROM Diocese WHERE Diocese = ?", (name,))
+    diocese_data = cursor.fetchone()
+    cursor = db.execute("SELECT Bishop FROM bishops")
+    connected_bishops = cursor.fetchall()
+    
+    if not bishop_data:
+        return f"<h1>{name} not found in the prelate database.</h1><br><p>Email mlawson07@tutanota.com</p>", 404
+  
+    return render_template("bishop.html", all_bishops=all_bishops, bishop=bishop_data, bishop_codes=bishop_codes)
+
+

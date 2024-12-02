@@ -139,7 +139,15 @@
         <!-- Right column for Dioceses (coming soon) -->
         <div class="dioceses-column">
             <h3>Dioceses</h3>
-            <p>Content for Dioceses will be available soon.</p>
+            <ul>        
+                {% if diocese %}
+                    {% for d in diocese %}
+                        <li><a href="">{{ d['Diocese'] }}</a></li>
+                    {% endfor %}
+                {% else %}
+                    <li>No bishops available.</li>
+                {% endif %}
+             </ul>         
         </div>
     </div>
 
