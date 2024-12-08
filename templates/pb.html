@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presiding Bishops of The Episcopal Church</title>
+    <style>
+        /* Navbar style */
+        nav {
+            background-color: grey;
+            font-family: Georgia, serif;
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+        }
+        
+        /* Navbar links style */
+        nav a {
+            color: black;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+        }
+
+        /* Hover effect for links */
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Additional styling for content */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+        }
+        h3, p {
+            text-align: left;
+        }
+
+        .infobox {
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid black;
+            border-collapse: collapse;
+            width: 60%;
+        }
+
+        .infobox-header {
+            color: #202122;
+            background-color: #dddddd;
+        }
+
+        .infobox-label, .infobox-data {
+            padding: 8px;
+            text-align: left;
+        }
+
+        .infobox-data {
+            text-align: center;
+        }
+
+        /* Center the "Bishop of Place" text */
+        .bishop-info {
+            text-align: center;
+        }        
+
+    </style>
+</head>
+<body>
+    <h1>Presiding Bishops of The Episcopal Church</h1>
+    <nav>
+        <a href="/">Home</a>
+    </nav>
+
+    <ol>
+        {% for bishop in all_bishops %}
+            <li>
+                <h3><a href="/bishop/{{ bishop['Bishop'] }}">{{ bishop['Bishop'] }}</a></h3>
+                <p><b>Consecrated:</b> {{ bishop['Year'] }}</p>
+                <p><b>Presiding Bishop:</b> {{ bishop['Notes'] }}</p>
+            </li>
+        {% endfor %}
+    </ol>
+</body>
+</html>

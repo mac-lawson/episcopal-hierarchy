@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ diocese_data['Diocese'] }}</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         /* Navbar style */
         nav {
@@ -13,7 +14,7 @@
             justify-content: center;
             padding: 10px;
         }
-        
+
         /* Navbar links style */
         nav a {
             color: black;
@@ -34,7 +35,7 @@
             padding: 0;
         }
 
-        h1, h3 {
+        h1, h2, h3 {
             text-align: center;
         }
 
@@ -63,7 +64,14 @@
         /* Center the "Bishop of Place" text */
         .bishop-info {
             text-align: center;
-        }        
+        }
+
+        /* Chart container style */
+        .chart-container {
+            width: 80%;
+            height: 400px;
+            margin: auto;
+        }
     </style>
 </head>
 <body>
@@ -77,22 +85,64 @@
 
     <!-- Diocese Details -->
     <h1>{{ diocese_data['Diocese'] }}</h1>
+    <h2>See of {{ diocese_data['See city'] }}</h2>
 
-    
-    <h3>See of {{ diocese_data['See city'] }}</h3>
+    <!-- Bar Chart for Diocese Data -->
 
 
-    <b><h5>Prelates</h5></b>
-   {%for bishop in connected_bishops%}
 
-    <tr>
-        <td><a href="/bishop/{{bishop['bishop']}}">The Most Rev. {{ bishop['bishop'] }}</a></td>
-    </tr>
-
+<h3><b>Prelates</b></h3>
+<ol>
+    {% for bishop in connected_bishops %}
+    <li>
+        <a href="/bishop/{{ bishop['bishop'] }}">The Rt. Rev. {{ bishop['bishop'] }}</a>
+    </li>
     {% endfor %}
+</ol>
+    <h3><b>Data</b></h3>
+    <div class="chart-container">
+        <canvas id="dioceseChart"></canvas>
+    </div>
+    <br>
+    <script>
+        const data = {
+            labels: ['Parishes & Missions', 'Avg Worship Attendance', 'Active Baptized Members'],
+            datasets: [{
+                label: 'Diocese Statistics (2023)',
+                data: [
+                    {{ diocese_data['Parishes and missions (2023)[1]'] }},
+                    {{ diocese_data['Average worship attendance (2023)[2]'] }},
+                    {{ diocese_data['Active baptized members (2023)[2]'] }}
+                ],
+                backgroundColor: ['#FF5733', '#33FF57', '#3357FF'],
+                borderColor: ['#C70039', '#28B463', '#1F77D3'],
+                borderWidth: 1
+            }]
+        };
 
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                }
+            }
+        };
 
+        const dioceseChart = new Chart(
+            document.getElementById('dioceseChart'),
+            config
+        );
+    </script>
 
 </body>
 </html>
-

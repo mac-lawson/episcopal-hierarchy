@@ -34,7 +34,7 @@
             padding: 0;
         }
 
-        h1, h3 {
+        h1, h3, p {
             text-align: center;
         }
 
@@ -71,49 +71,45 @@
     <!-- Navbar -->
     <nav>
         <a href="/">Home</a>
-        <a href="#bishops">Bishops</a>
-        <a href="#dioceses">Dioceses</a>
     </nav>
 
     <!-- Bishop Details -->
-    <h1>The Most Reverend {{ bishop['bishop'] }}</h1>
+    <h1>The Right Reverend {{ bishop['bishop'] }}</h1>
+    <tr>
+    <th class="infobox-label" scope="row"></th>
+    <td class="infobox-data">
+        <!-- Display the bishop's number in succession -->
+       <p><b>Consecreation {{ bishop_index }} in the Episcopal Succession of The Episcopal Church</b></p>
+       <p><b>Consecreated in {{ bishop['year'] }}</b></p>
+    </td>
+</tr>
 
-    {% if bishop['notes'] and 'PB' in bishop['notes'] %}
-    {% set pb_number = bishop['notes'] | replace('PB', '') | int %}
-    
-    {% if pb_number == 1 %}
-        {% set suffix = 'st' %}
-    {% elif pb_number == 2 %}
-        {% set suffix = 'nd' %}
-    {% elif pb_number == 3 %}
-        {% set suffix = 'rd' %}
-    {% elif pb_number in [11, 12, 13] %}
-        {% set suffix = 'th' %}
+
+{% if bishop['notes'] and 'PB' in bishop['notes'] %}
+
+<h3>
+    {% if bishop['bishop'] == "Sean W. Rowe" %}
+        <span style="color: red;">~ Incumbent Presiding Bishop of the Episcopal Church ({{bishop['notes']}}) ~</span>
     {% else %}
-        {% set suffix = 'th' %}
+      {{bishop['Notes']}} 
     {% endif %}
-    
-    <h3>{{ pb_number }}{{ suffix }} Presiding Bishop of the Episcopal Church</h3>
+</h3>
 {% endif %}
 
 
-   {% if bishop['diocese'] %}
+ {% if bishop['diocese'] %}
 
-        {% set position_match = bishop['diocese'].split(' ') %}
 
-        {% if position_match|length > 1 %}
 
-            {% set diocese = position_match|join(' ') %}
 
-            <p class="bishop-info">{{ position_match[0]}} Bishop of {{ position_match[1:]|join(' ') }}</p>
 
-        {% else %}
+<p class="bishop-info">Bishop of {{ bishop['diocese'] }}</p>
 
-            <p class="bishop-info">Bishop of {{ bishop['diocese'] }}</p>
 
-        {% endif %}
 
-    {% endif %}
+
+
+{% endif %} 
 
     <!-- Infobox with Consecrators -->
     <table class="infobox vcard">
@@ -126,8 +122,8 @@
                 <td class="infobox-data">
                     <table>
                         <tbody>
-                            {% for consecrator in bishop['consecrators'].split(' ') %}
-                                {% set consecrator_name = bishop_codes.get(consecrator.strip(), consecrator.strip()) %}
+                           {% for consecrator in bishop['consecrators'].split(' ') %}
+                                {% set consecrator_name = bishop_codes.get(consecrator.strip(), consecrator.strip())%}
                                 
                                 {% if consecrator_name == consecrator.strip() %}
                                     <!-- Add your custom code here for consecrators not found in bishop_codes -->
