@@ -5,21 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Episcopal Succession</title>
     <style>
-        /* General styling */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            line-height: 1.6;
         }
 
-        h1, h3 {
-            text-align: center;
-        }
-
-        /* Title area with space for images */
         .header {
-            background-color: grey;
+            background-color: #2c3e50;
+            color: white;
             padding: 20px;
+            text-align: center;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -27,7 +24,6 @@
 
         .header h1 {
             margin: 0;
-            color: white;
         }
 
         .header img {
@@ -35,119 +31,115 @@
             height: 50px;
         }
 
-        /* Navbar style */
         nav {
-            background-color: grey;
-            font-family: Georgia, serif;
-            display: flex;
-            justify-content: center;
+            background-color: #34495e;
             padding: 10px;
         }
 
-        /* Navbar links style */
         nav a {
-            color: black;
-            text-decoration: none;
+            color: white;
             margin: 0 15px;
-            font-size: 18px;
+            text-decoration: none;
         }
 
-        /* Hover effect for links */
         nav a:hover {
             text-decoration: underline;
         }
 
-        /* New section above bishops and dioceses */
-        .options {
-            background-color: lightblue;
+        .container {
+            margin: 20px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .column {
+            flex: 1;
             padding: 20px;
-            text-align: center;
+            background: #ecf0f1;
+            border: 1px solid #bdc3c7;
         }
 
-        .options a {
-            color: black;
+        .column ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .column ul li {
+            margin: 10px 0;
+        }
+
+        .column ul li a {
             text-decoration: none;
-            margin: 0 15px;
-            font-size: 18px;
+            color: #2c3e50;
         }
 
-        .options a:hover {
+        .column ul li a:hover {
             text-decoration: underline;
         }
 
-        /* Two-column layout */
-        .container {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px;
-        }
-
-        /* Left column for Bishops */
-        .bishops-column {
-            width: 48%;
-            padding: 10px;
-            background-color: #f4f4f4;
-        }
-
-        /* Right column for Dioceses */
-        .dioceses-column {
-            width: 48%;
-            padding: 10px;
-            background-color: #f9f9f9;
-        }
-
-        /* Footer style */
         footer {
-            background-color: grey;
+            background-color: #2c3e50;
             color: white;
             text-align: center;
             padding: 10px 0;
-            position: relative;
-            bottom: 0;
-            width: 100%;
         }
 
-        /* List style */
-        ul {
-            list-style-type: none;
-            padding: 0;
+        .filter-form {
+            margin: 20px;
             text-align: center;
         }
 
-        li {
-            margin: 10px 0;
+        .filter-form input {
+            margin: 0 10px;
+            padding: 5px;
+        }
+
+        .filter-form button {
+            padding: 5px 10px;
+            background-color: #34495e;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .filter-form button:hover {
+            background-color: #2c3e50;
         }
     </style>
 </head>
-
 <body>
-
-    <!-- Header with space for images -->
     <div class="header">
         <h1>Episcopal Church Hierarchy</h1>
-        <div>
-            <img src="https://www.episcopalchurch.org/wp-content/uploads/sites/2/2024/05/TEC-Shield-Thumbnail-820x1024.png" alt="Right Image">            
-           <b><i>Episcopal Web Project</i></b>
-        </div>
+        <img src="https://www.episcopalchurch.org/wp-content/uploads/sites/2/2024/05/TEC-Shield-Thumbnail-820x1024.png" alt="Episcopal Shield">
     </div>
 
-
-
-    <!-- Options section -->
-    <div class="options">
+    <nav>
+        <a href="#">Home</a>
         <a href="/pb">Presiding Bishops</a>
+        <a href="#">Dioceses</a>
+        <a href="#">Events</a>
+        <a href="#">Religious Orders</a>
+    </nav>
 
-    </div>
+    <!-- Filtering Form -->
+    <form method="get" class="filter-form">
+        <label for="bishop_name">Filter Bishops:</label>
+        <input type="text" id="bishop_name" name="bishop_name" value="{{ request.args.get('bishop_name', '') }}">
+        
+        <label for="diocese_name">Filter Dioceses:</label>
+        <input type="text" id="diocese_name" name="diocese_name" value="{{ request.args.get('diocese_name', '') }}">
 
-    <!-- Main content container -->
+        <button type="submit">Filter</button>
+    </form>
+
     <div class="container">
-        <!-- Left column for Bishops -->
-        <div class="bishops-column">
+        <div class="column">
             <h3>Bishops</h3>
             <ul>
                 {% if bishops %}
                     {% for bishop in bishops %}
-                        <li><a href="/bishop/{{ bishop['bishop'] }}">{{ bishop['bishop'] }}</a></li>
+                        <li><a href="/bishop/{{ bishop['Bishop'] }}">{{ bishop['Bishop'] }}</a></li>
                     {% endfor %}
                 {% else %}
                     <li>No bishops available.</li>
@@ -155,25 +147,23 @@
             </ul>
         </div>
 
-        <!-- Right column for Dioceses (coming soon) -->
-        <div class="dioceses-column">
+        <div class="column">
             <h3>Dioceses</h3>
-            <ul>        
+            <ul>
                 {% if diocese %}
                     {% for d in diocese %}
                         <li><a href="/diocese/{{ d['Diocese'] }}">{{ d['Diocese'] }}</a></li>
                     {% endfor %}
                 {% else %}
-                    <li>No bishops available.</li>
+                    <li>No dioceses available.</li>
                 {% endif %}
-             </ul>         
+            </ul>
         </div>
     </div>
 
-    <!-- Footer -->
     <footer>
         <p>&copy; 2024 Episcopal Succession. All rights reserved.</p>
     </footer>
-
 </body>
 </html>
+

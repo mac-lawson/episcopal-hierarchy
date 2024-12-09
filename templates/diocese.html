@@ -104,45 +104,60 @@
         <canvas id="dioceseChart"></canvas>
     </div>
     <br>
-    <script>
-        const data = {
-            labels: ['Parishes & Missions', 'Avg Worship Attendance', 'Active Baptized Members'],
-            datasets: [{
-                label: 'Diocese Statistics (2023)',
-                data: [
-                    {{ diocese_data['Parishes and missions (2023)[1]'] }},
-                    {{ diocese_data['Average worship attendance (2023)[2]'] }},
-                    {{ diocese_data['Active baptized members (2023)[2]'] }}
-                ],
-                backgroundColor: ['#FF5733', '#33FF57', '#3357FF'],
-                borderColor: ['#C70039', '#28B463', '#1F77D3'],
-                borderWidth: 1
-            }]
-        };
+<script>
+    const data = {
+        labels: ['Statistics'],
+        datasets: [
+            {
+                label: 'Parishes & Missions',
+                data: [{{ diocese_data['Parishes and missions (2023)[1]'] }}],
+                backgroundColor: '#FF5733',
+            },
+            {
+                label: 'Avg Worship Attendance',
+                data: [{{ diocese_data['Average worship attendance (2023)[2]'] }}],
+                backgroundColor: '#33FF57',
+            },
+            {
+                label: 'Active Baptized Members',
+                data: [{{ diocese_data['Active baptized members (2023)[2]'] }}],
+                backgroundColor: '#3357FF',
+            }
+        ]
+    };
 
-        const config = {
-            type: 'bar',
-            data: data,
-            options: {
-                responsive: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    stacked: true
                 },
-                plugins: {
-                    legend: {
-                        position: 'top',
-                    }
+                y: {
+                    stacked: true,
+                    beginAtZero: true,
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
                 }
             }
-        };
+        }
+    };
 
-        const dioceseChart = new Chart(
-            document.getElementById('dioceseChart'),
-            config
-        );
-    </script>
+    const dioceseChart = new Chart(
+        document.getElementById('dioceseChart'),
+        config
+    );
+</script>
+
+
+
+
+
 
 </body>
 </html>

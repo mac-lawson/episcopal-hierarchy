@@ -5,76 +5,106 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Presiding Bishops of The Episcopal Church</title>
     <style>
-        /* Navbar style */
-        nav {
-            background-color: grey;
-            font-family: Georgia, serif;
-            display: flex;
-            justify-content: center;
-            padding: 10px;
-        }
-        
-        /* Navbar links style */
-        nav a {
-            color: black;
-            text-decoration: none;
-            margin: 0 15px;
-            font-size: 18px;
-        }
-
-        /* Hover effect for links */
-        nav a:hover {
-            text-decoration: underline;
-        }
-
-        /* Additional styling for content */
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            line-height: 1.6;
         }
+
+        .header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+.header h1 {
+    margin: 0;
+    font-size: 1.8em; /* Adjust the size as needed */
+    text-align: center;
+}
+
+
+        .header img {
+            width: 50px;
+            height: 50px;
+        }
+
+        nav {
+            background-color: #2c3e50;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
         h1 {
             text-align: center;
-        }
-        h3, p {
-            text-align: left;
+            color: #2c3e50;
         }
 
-        .infobox {
-            margin-left: auto;
-            margin-right: auto;
-            border: 1px solid black;
-            border-collapse: collapse;
-            width: 60%;
+        ol {
+            margin: 20px auto;
+            width: 80%;
+            padding: 0;
         }
 
-        .infobox-header {
-            color: #202122;
-            background-color: #dddddd;
+        ol li {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #ecf0f1;
+            border: 1px solid #bdc3c7;
+            list-style: none;
         }
 
-        .infobox-label, .infobox-data {
-            padding: 8px;
-            text-align: left;
+        ol li h3 {
+            margin: 0;
+            font-size: 1.2em;
+            color: #2c3e50;
         }
 
-        .infobox-data {
+        ol li h3 a {
+            text-decoration: none;
+            color: #2c3e50;
+        }
+
+        ol li h3 a:hover {
+            text-decoration: underline;
+        }
+
+        ol li p {
+            margin: 10px 0 0;
+            font-size: 1em;
+            color: #34495e;
+        }
+
+        footer {
+            background-color: #2c3e50;
+            color: white;
             text-align: center;
+            padding: 10px 0;
         }
-
-        /* Center the "Bishop of Place" text */
-        .bishop-info {
-            text-align: center;
-        }        
-
     </style>
 </head>
 <body>
-    <h1>Presiding Bishops of The Episcopal Church</h1>
+
     <nav>
         <a href="/">Home</a>
     </nav>
-
     <ol>
         {% for bishop in all_bishops %}
             <li>
@@ -84,5 +114,9 @@
             </li>
         {% endfor %}
     </ol>
+    <footer>
+        &copy; 2024 Episcopal Church Information
+    </footer>
 </body>
 </html>
+

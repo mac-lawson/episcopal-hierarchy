@@ -111,36 +111,43 @@
 
 {% endif %} 
 
-    <!-- Infobox with Consecrators -->
-    <table class="infobox vcard">
-        <tbody>
-            <tr>
-                <th class="infobox-header" colspan="2">Holy Orders</th>
-            </tr>
-            <tr>
-                <th class="infobox-label" scope="row">Consecrators</th>
-                <td class="infobox-data">
-                    <table>
-                        <tbody>
-                           {% for consecrator in bishop['consecrators'].split(' ') %}
-                                {% set consecrator_name = bishop_codes.get(consecrator.strip(), consecrator.strip())%}
-                                
-                                {% if consecrator_name == consecrator.strip() %}
-                                    <!-- Add your custom code here for consecrators not found in bishop_codes -->
-                                    {% set consecrator_name = all_bishops[(consecrator|int) - 1]['bishop'] %}
-                                        
-                                {% endif %}
-                                
-                                <tr>
-                                    <td><a href="/bishop/{{ consecrator_name | replace(' ', '%20') }}">{{ consecrator_name }}</a></td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+<!-- Infobox with Consecrators -->
+<table class="infobox vcard">
+    <tbody>
+        <tr>
+            <th class="infobox-header" colspan="2">Holy Orders</th>
+        </tr>
+        <tr>
+            <th class="infobox-label" scope="row">Consecrators</th>
+            <td class="infobox-data">
+                <table>
+                    <tbody>
+                        {% for consecrator in bishop['consecrators'].split(' ') %}
+                            {% set consecrator_name = bishop_codes.get(consecrator.strip(), consecrator.strip()) %}
+                            
+                            {% if consecrator_name == consecrator.strip() %}
+                                {% set consecrator_name = all_bishops[(consecrator|int) - 1]['bishop'] %}
+                                {% set consecrator_year = all_bishops[(consecrator|int) - 1]['Year'] %}
+                                {% set consecrator_title = "Bishop of " ~ all_bishops[(consecrator|int) - 1]['Diocese'] %}
+                            {% endif %}
+                            
+                            <tr>
+                                <td><a href="/bishop/{{ consecrator_name | replace(' ', '%20') }}">{{ consecrator_name }}</a></td>
+                                <td>{{ consecrator_title }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <!-- Ordination Row -->
+        <tr>
+            <th class="infobox-label" scope="row">Ordination</th>
+            <td class="infobox-data">{{ ordination_date }}</td>
+        </tr>
+    </tbody>
+</table>
+
 
 </body>
 </html>

@@ -1,0 +1,13 @@
+DEPLOYMENT
+
+Get:
+data/fetch.py
+data/fetch_d.py
+
+Clean:
+data/CLEAN/clean_db.py
+data/CLEAN/clean_db_bishops.py
+
+
+Bishop Titles:
+data/BISHOP/bishop_titles.py

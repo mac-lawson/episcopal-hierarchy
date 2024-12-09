@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lectionary Events</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            margin: 20px;
+        }
+
+        .event-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .event-list li {
+            margin: 10px 0;
+            padding: 10px;
+            background: #ecf0f1;
+            border: 1px solid #bdc3c7;
+            border-radius: 5px;
+        }
+
+        .event-list li a {
+            text-decoration: none;
+            color: #2c3e50;
+        }
+
+        .event-list li a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Lectionary Events</h1>
+    </div>
+
+    <div class="container">
+        <ul class="event-list">
+            {% for event in events %}
+                <li>
+                    <a href="{{ event.link }}" target="_blank">{{ event.text }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Lectionary Events. All rights reserved.</p>
+    </footer>
+</body>
+</html>
+

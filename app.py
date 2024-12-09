@@ -1,14 +1,28 @@
 from flask import Flask, render_template, request, g
 import sqlite3
+from bs4 import BeautifulSoup
+
+from requests import get
+
+import wikidata
+
+import wptools
 
 
 
 app = Flask(__name__)
 
+# CONSTANTS
+
 # Database configuration
 DATABASE_BISHOPS = "bishops.db"
 DATABASE_DIOCESE = "diocese.db"
+
+# Current Presiding Bishop
+current_pb = "Sean W. Rowe"
+
 # Mapping of bishop codes to actual bishop names
+
 bishop_codes = {
     "BAK": "Gilbert Baker, Bishop of Hong Kong and Macao",
     "BAN": "Chiu Ban It, Bishop of Singapore",
@@ -60,6 +74,25 @@ bishop_codes = {
 }
 
 
+@app.route('/events')
+def events():
+    """Fetch and display lectionary information from lectionarypage.net."""
+    url = "https://lectionarypage.net/"
+    response = get(url)
+    response.raise_for_status()  # Ensure we got a successful response
+    
+    soup = BeautifulSoup(response.text, "html.parser")
+
+    # Extract lectionary sections (adjust selectors based on the site structure)
+    events = []
+    for item in soup.select(".mainContent a"):  # Replace `.mainContent a` with the correct class or tag
+        text = item.get_text(strip=True)
+        link = item["href"]
+
+        events.append({"text": text, "link": link})
+
+    return render_template("events.html", events=events)
+
 
 def get_db_b():
     """Connect to the SQLite database."""
@@ -81,14 +114,10 @@ def close_connection(exception):
     if db is not None:
         db.close()
 
-@app.route("/")
+
+@app.route('/')
 def new_home():
-    return render_template("new_home.html")
-
-
-@app.route("/old")
-def home():
-    """Home page: list and filter bishops and dioceses."""
+    """New homepage with filtering for bishops and dioceses."""
     db = get_db_b()
     db_1 = get_db_d()
     
@@ -110,12 +139,16 @@ def home():
         cursor_1 = db_1.execute("SELECT Diocese FROM diocese")
     diocese = cursor_1.fetchall()
 
-    return render_template("test_home.html", bishops=bishops, diocese=diocese)
+    return render_template("home.html", bishops=bishops, diocese=diocese)
+
+
 
 @app.route("/bishop/<name>")
 def bishop(name):
     """Details page for a specific bishop."""
     db = get_db_b()
+
+
     
     # Fetch all bishops for navigation or reference
     cursor = db.execute("SELECT Bishop FROM bishops")
@@ -130,14 +163,15 @@ def bishop(name):
     # Fetch details of the specific bishop
     cursor = db.execute("SELECT * FROM bishops WHERE Bishop = ?", (name,))
     bishop_data = cursor.fetchone()
-    cursor = db.execute("SELECT Bishop FROM bishops")
+    cursor = db.execute("SELECT * FROM bishops")
     bishops = cursor.fetchall() 
     return render_template(
         "bishop.html",
         all_bishops=bishops,
         bishop=bishop_data,
         bishop_index=bishop_index+1,
-        bishop_codes=bishop_codes
+        bishop_codes=bishop_codes,
+        ordination_date=wikidata.holy_orders(name)
     )
 
 @app.route("/diocese/<diocese>")

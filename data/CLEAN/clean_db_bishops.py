@@ -2,7 +2,8 @@ import sqlite3
 import re
 
 # Connect to the SQLite database
-conn = sqlite3.connect('../../bishops.db')
+#conn = sqlite3.connect('../../bishops.db')
+conn = sqlite3.connect('mydatabase.db')
 cursor = conn.cursor()
 
 # Update query to remove content surrounded by brackets in all three columns
