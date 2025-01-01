@@ -73,6 +73,12 @@
             margin: auto;
         }
     </style>
+    <style>
+table, th, td {
+  border: 1px solid black;
+
+}
+</style>
 </head>
 <body>
 <h1>Episcopal Hierarchy</h1>
@@ -99,61 +105,20 @@
     </li>
     {% endfor %}
 </ol>
-    <h3><b>Data</b></h3>
-    <div class="chart-container">
-        <canvas id="dioceseChart"></canvas>
-    </div>
+    <h3><b>Data (2023)</b></h3>
+     <table class="center">
+        <tr>
+          <th><b>Parishes and missions</b></th>
+          <th><b>Avg Worship Attendance</b></th>
+          <th><b>Active Baptized Members</b></th>
+        </tr>
+        <tr>
+          <td><a</a>{{ diocese_data['Parishes and missions (2023)[1]'] }}</td>
+          <td>{{ diocese_data['Average worship attendance (2023)[2]'] }}</td>
+          <td>{{ diocese_data['Active baptized members (2023)[2]'] }}</td>
+        </tr>
     <br>
-<script>
-    const data = {
-        labels: ['Statistics'],
-        datasets: [
-            {
-                label: 'Parishes & Missions',
-                data: [{{ diocese_data['Parishes and missions (2023)[1]'] }}],
-                backgroundColor: '#FF5733',
-            },
-            {
-                label: 'Avg Worship Attendance',
-                data: [{{ diocese_data['Average worship attendance (2023)[2]'] }}],
-                backgroundColor: '#33FF57',
-            },
-            {
-                label: 'Active Baptized Members',
-                data: [{{ diocese_data['Active baptized members (2023)[2]'] }}],
-                backgroundColor: '#3357FF',
-            }
-        ]
-    };
-
-    const config = {
-        type: 'bar',
-        data: data,
-        options: {
-            responsive: true,
-            scales: {
-                x: {
-                    stacked: true
-                },
-                y: {
-                    stacked: true,
-                    beginAtZero: true,
-                }
-            },
-            plugins: {
-                legend: {
-                    position: 'top',
-                }
-            }
-        }
-    };
-
-    const dioceseChart = new Chart(
-        document.getElementById('dioceseChart'),
-        config
-    );
-</script>
-
+</table>
 
 
 

@@ -19,3 +19,4 @@ def p_consecrator(name):
         return infobox.get("ordination")
     except (KeyError, TypeError, LookupError):
         return "Unknown"
+

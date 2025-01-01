@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dioceses</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <header>
+        <h1>Dioceses</h1>
+    </header>
+
+    <main>
+        <ul>
+            {% if diocese %}
+                {% for d in diocese %}
+                    <li><a href="/diocese/{{ d['Diocese'] }}">{{ d['Diocese'] }}</a></li>
+                {% endfor %}
+            {% else %}
+                <li>No dioceses available.</li>
+            {% endif %}
+        </ul>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Episcopal Succession. All rights reserved.</p>
+    </footer>
+</body>
+</html>
+

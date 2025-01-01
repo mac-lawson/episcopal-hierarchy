@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bishops</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
+</head>
+<body>
+    <header>
+        <h1>Bishops</h1>
+    </header>
+
+    <main>
+        <ul>
+ <table style="border: 1px solid black;">
+  <tr>
+    <th><b>Name</b></th>
+    <th><b>Diocese</b></th>
+    <th><b>Consecration Year</b></th>
+  </tr>
+            {% if bishops %}
+                {% for bishop in bishops %}
+                    <tr>
+                      <td><a href="/bishop/{{ bishop['Bishop'] }}">{{ bishop['Bishop'] }}</a></td>
+                      <td>{{ bishop['Diocese'] }}</td>
+                      <td>{{ bishop['Year'] }}</td>
+                    </tr>
+
+                {% endfor %}
+            {% else %}
+                <li>No bishops available.</li>
+            {% endif %}
+
+
+</table> 
+
+        </ul>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Episcopal Succession. All rights reserved.</p>
+    </footer>
+</body>
+</html>
+

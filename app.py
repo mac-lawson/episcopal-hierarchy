@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, g
 import sqlite3
 from bs4 import BeautifulSoup
-
+from markupsafe import Markup
 from requests import get
 
 import wikidata
@@ -117,30 +117,42 @@ def close_connection(exception):
 
 @app.route('/')
 def new_home():
-    """New homepage with filtering for bishops and dioceses."""
+    """Homepage with two columns but no bishops/diocese data."""
+    return render_template("home.html")
+
+
+
+@app.route('/bishops/<op>')
+def bishops(op):
+    """Route to display bishops only."""
     db = get_db_b()
-    db_1 = get_db_d()
-    
-    # Fetch filter parameters
-    bishop_name = request.args.get("bishop_name", "").strip()
-    diocese_name = request.args.get("diocese_name", "").strip()
 
-    # Filter bishops
-    if bishop_name:
-        cursor = db.execute("SELECT Bishop FROM bishops WHERE Bishop LIKE ?", (f"%{bishop_name}%",))
-    else:
-        cursor = db.execute("SELECT Bishop FROM bishops")
+    match op:
+        case "all":
+            cursor = db.execute("SELECT * FROM bishops")
+        case "az":
+            cursor = db.execute("SELECT * FROM bishops ORDER BY Bishop;")
+        case "za":
+            cursor = db.execute("SELECT * FROM bishops ORDER BY Bishop DESC;")
+        case "daz":
+            cursor = db.execute("SELECT * FROM bishops ORDER BY Diocese;")
+        case "dza":
+            cursor = db.execute("SELECT * FROM bishops ORDER BY Diocese DESC;")
+        case "yrlh":
+            cursor = db.execute("SELECT * FROM bishops ORDER BY Year;")
+        case "yrhl":
+            cursor = db.execute("SELECT * FROM bishops ORDER BY Year DESC;")
     bishops = cursor.fetchall()
+    return render_template("bishops.html", bishops=bishops)
 
-    # Filter dioceses
-    if diocese_name:
-        cursor_1 = db_1.execute("SELECT Diocese FROM diocese WHERE Diocese LIKE ?", (f"%{diocese_name}%",))
-    else:
-        cursor_1 = db_1.execute("SELECT Diocese FROM diocese")
-    diocese = cursor_1.fetchall()
 
-    return render_template("home.html", bishops=bishops, diocese=diocese)
-
+@app.route('/dioceses')
+def dioceses():
+    """Route to display dioceses only."""
+    db_1 = get_db_d()
+    cursor = db_1.execute("SELECT Diocese FROM diocese")
+    diocese = cursor.fetchall()
+    return render_template("dioceses.html", diocese=diocese)
 
 
 @app.route("/bishop/<name>")
@@ -171,7 +183,7 @@ def bishop(name):
         bishop=bishop_data,
         bishop_index=bishop_index+1,
         bishop_codes=bishop_codes,
-        ordination_date=wikidata.holy_orders(name)
+        ordination_date=Markup(wikidata.holy_orders(name))
     )
 
 @app.route("/diocese/<diocese>")

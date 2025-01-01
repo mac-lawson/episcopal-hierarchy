@@ -11,3 +11,15 @@ data/CLEAN/clean_db_bishops.py
 
 Bishop Titles:
 data/BISHOP/bishop_titles.py
+
+                data: [{{ diocese_data['Parishes and missions (2023)[1]'] }}],
+                backgroundColor: '#FF5733',
+            },
+            {
+                label: 'Avg Worship Attendance',
+                data: [{{ diocese_data['Average worship attendance (2023)[2]'] }}],
+                backgroundColor: '#33FF57',
+            },
+            {
+                label: 'Active Baptized Members',
+                data: [{{ diocese_data['Active baptized members (2023)[2]'] }}],

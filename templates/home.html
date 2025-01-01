@@ -17,18 +17,6 @@
             color: white;
             padding: 20px;
             text-align: center;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header h1 {
-            margin: 0;
-        }
-
-        .header img {
-            width: 50px;
-            height: 50px;
         }
 
         nav {
@@ -42,10 +30,6 @@
             text-decoration: none;
         }
 
-        nav a:hover {
-            text-decoration: underline;
-        }
-
         .container {
             margin: 20px;
             display: flex;
@@ -57,25 +41,7 @@
             flex: 1;
             padding: 20px;
             background: #ecf0f1;
-            border: 1px solid #bdc3c7;
-        }
-
-        .column ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .column ul li {
-            margin: 10px 0;
-        }
-
-        .column ul li a {
-            text-decoration: none;
-            color: #2c3e50;
-        }
-
-        .column ul li a:hover {
-            text-decoration: underline;
+            border: 10px solid  #89d1d3;
         }
 
         footer {
@@ -90,13 +56,13 @@
             text-align: center;
         }
 
-        .filter-form input {
+        .filter-form input,
+        .filter-form button {
             margin: 0 10px;
             padding: 5px;
         }
 
         .filter-form button {
-            padding: 5px 10px;
             background-color: #34495e;
             color: white;
             border: none;
@@ -111,53 +77,34 @@
 <body>
     <div class="header">
         <h1>Episcopal Church Hierarchy</h1>
-        <img src="https://www.episcopalchurch.org/wp-content/uploads/sites/2/2024/05/TEC-Shield-Thumbnail-820x1024.png" alt="Episcopal Shield">
     </div>
 
     <nav>
-        <a href="#">Home</a>
-        <a href="/pb">Presiding Bishops</a>
-        <a href="#">Dioceses</a>
-        <a href="#">Events</a>
+        <a href="#">About</a>
+        <a href="#">News</a>
         <a href="#">Religious Orders</a>
     </nav>
 
-    <!-- Filtering Form -->
-    <form method="get" class="filter-form">
-        <label for="bishop_name">Filter Bishops:</label>
-        <input type="text" id="bishop_name" name="bishop_name" value="{{ request.args.get('bishop_name', '') }}">
-        
-        <label for="diocese_name">Filter Dioceses:</label>
-        <input type="text" id="diocese_name" name="diocese_name" value="{{ request.args.get('diocese_name', '') }}">
-
-        <button type="submit">Filter</button>
-    </form>
 
     <div class="container">
+        <!-- Placeholder for Bishops Section -->
         <div class="column">
-            <h3>Bishops</h3>
-            <ul>
-                {% if bishops %}
-                    {% for bishop in bishops %}
-                        <li><a href="/bishop/{{ bishop['Bishop'] }}">{{ bishop['Bishop'] }}</a></li>
-                    {% endfor %}
-                {% else %}
-                    <li>No bishops available.</li>
-                {% endif %}
-            </ul>
+            <h3 style="text-align: center;">Bishops</h3>
+           <ul>
+            <li><a href="/bishops/all">All</a></li>
+            <li>By Name [<a href="/bishops/az">A-Z</a>] [<a href="/bishops/za">Z-A</a>]</li>
+            <li>By Diocese [<a href="/bishops/daz">A-Z</a>] [<a href="/bishops/dza">Z-A</a>]</li>
+            <li>By Year Consecreated [<a href="/bishops/yrlh">Oldest-Recent</a>] [<a href="/bishops/yrhl">Recent-Oldest</a>]</li>
+          
+        </ul> 
         </div>
 
+        <!-- Placeholder for Dioceses Section -->
         <div class="column">
-            <h3>Dioceses</h3>
-            <ul>
-                {% if diocese %}
-                    {% for d in diocese %}
-                        <li><a href="/diocese/{{ d['Diocese'] }}">{{ d['Diocese'] }}</a></li>
-                    {% endfor %}
-                {% else %}
-                    <li>No dioceses available.</li>
-                {% endif %}
-            </ul>
+            <h3 style="text-align: center;">Dioceses</h3>
+           <ul>
+            <li><a href="/dioceses">All</a></li>
+           </ul>             
         </div>
     </div>
 
